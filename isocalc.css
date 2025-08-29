@@ -1,0 +1,118 @@
+/* =============================
+   iOS Calculator Stylesheet
+   ============================= */
+
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Calculator container */
+.calculator {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  max-height: 700px;
+  padding: 20px;
+}
+
+/* Display section */
+.display {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.history {
+  font-size: 1.2rem;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.output {
+  font-size: 3rem;
+  font-weight: 300;
+  color: #fff;
+  word-wrap: break-word;
+  text-align: right;
+}
+
+/* Keypad grid */
+.keys {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+/* Button base style */
+.key {
+  background-color: #333;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #fff;
+  height: 70px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+/* Wide zero button */
+.key--zero {
+  grid-column: span 2;
+  border-radius: 35px;
+  justify-content: flex-start;
+  padding-left: 28px;
+  width: auto;
+}
+
+/* Function buttons (AC, ±, %) */
+.key--func {
+  background-color: #a5a5a5;
+  color: #000;
+}
+
+/* Operator buttons (+, −, ×, ÷, =) */
+.key--op {
+  background-color: #ff9f0a;
+  color: #fff;
+}
+
+/* Button hover/active states */
+.key:active {
+  filter: brightness(1.3);
+}
+
+.key:focus {
+  outline: none;
+  filter: brightness(1.15);
+}

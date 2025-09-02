@@ -1,5 +1,5 @@
 /* =============================
-   iOS Calculator Stylesheet
+   TREM Calculator Theme
    ============================= */
 
 /* General Reset */
@@ -10,25 +10,44 @@
 }
 
 body {
+  background-color: #f0f0f5;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #000;
+  background: url(iosimages/OIP.webp) no-repeat center center fixed;
+  background-size: cover;
   color: #fff;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start; /* start from top */
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 /* Calculator container */
 .calculator {
   display: flex;
+  background: #000;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   max-width: 400px;
-  height: 100%;
-  max-height: 700px;
   padding: 20px;
+  border: 2px solid #c9a227; /* gold outline */
+  border-radius: 20px;
+  margin-bottom: 20px; /* space below calculator */
+}
+
+/* Brand/Header inside calculator */
+.brand {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #c9a227;
+  padding: 0.5rem 0;
+  letter-spacing: 1px;
+  font-family: 'Segoe UI', sans-serif;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 /* Display section */
@@ -49,11 +68,19 @@ body {
 }
 
 .output {
-  font-size: 3rem;
-  font-weight: 300;
+  width: 100%;
+  height: 80px;                 
+  background-color: #1a1a1a;   /* lighter black for contrast */
   color: #fff;
-  word-wrap: break-word;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 2.5rem;
+  padding: 0 20px;
+  box-sizing: border-box;
+  border: 2px solid #333;      /* clear border around container */
+  border-radius: 10px;         /* smooth edges */
+  overflow: hidden;            /* prevent text overflow */
 }
 
 /* Keypad grid */
@@ -71,22 +98,48 @@ body {
 
 /* Button base style */
 .key {
-  background-color: #333;
   border: none;
   border-radius: 50%;
   font-size: 1.5rem;
   font-weight: 500;
-  color: #fff;
   height: 70px;
   width: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: filter 0.2s;
+  transition: 
+    background-color 0.2s ease, 
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.1s ease;
 }
 
-/* Wide zero button */
+/* Hover = lift up, Active = pressed in */
+.key:hover {
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+  transform: translateY(-2px);
+}
+.key:active {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+  transform: translateY(1px);
+}
+
+/* Numbers (black → red hover) */
+.key:not(.key--op):not(.key--func) {
+  background-color: #222;
+  color: #fff;
+}
+.key:not(.key--op):not(.key--func):hover {
+  background-color: #e60000; /* red */
+  color: #fff;
+}
+.key:not(.key--op):not(.key--func):active {
+  background-color: #990000; /* darker red */
+  color: #fff;
+}
+
+/* Zero fix */
 .key--zero {
   grid-column: span 2;
   border-radius: 35px;
@@ -95,24 +148,140 @@ body {
   width: auto;
 }
 
-/* Function buttons (AC, ±, %) */
+/* Function buttons (AC, ±, DEL) gold → black hover */
 .key--func {
-  background-color: #a5a5a5;
+  background-color: #c9a227; /* gold */
   color: #000;
 }
-
-/* Operator buttons (+, −, ×, ÷, =) */
-.key--op {
-  background-color: #ff9f0a;
+.key--func:hover {
+  background-color: #000;
+  color: #fff;
+}
+.key--func:active {
+  background-color: #333; /* softer black */
   color: #fff;
 }
 
-/* Button hover/active states */
-.key:active {
+/* Operator buttons (+, −, ×, ÷, =) red → gold hover */
+.key--op {
+  background-color: #e60000;
+  color: #fff;
+}
+.key--op:hover {
+  background-color: #c9a227; /* gold */
+  color: #000;
+}
+.key--op:active {
+  background-color: #a67c1a; /* darker gold */
+  color: #000;
+}
+
+/* Footer inside calculator */
+.calc-footer {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #c9a227;
+  padding: 5px 15px;
+  width: 100%;
+  background: #1f1f1f;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  margin-top: 20px; /* space above footer inside calculator */
+}
+
+/* Footer link styles */
+.calc-footer a {
+  color: #FFD700;   /* Gold */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.calc-footer a:visited {
+  color: #FFD700;
+}
+
+.calc-footer a:hover {
+  color: #FFA500;   /* Orange-gold on hover */
+  text-decoration: underline;
+}
+
+/* Site Header & Footer */
+.site-header, .site-footer {
+  width: 100%;
+  padding: 15px 0;
+  background: radial-gradient(ellipse, #FFD700, black); /* gradient */
+  color: black;   /* black text */
+  font-weight: bold ;
+  text-align: center;
+  position: relative;
+}
+
+.site-header {
+  margin-bottom: 20px; /* space below header */
+}
+
+.site-footer {
+  margin-top: auto;
+}
+
+/* =============================
+   Footer Social Media Logos
+   ============================= */
+
+/* Container for social icons inside calculator footer */
+.calc-footer .socials {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* space between icons */
+  flex-wrap: wrap; /* wrap on small screens */
+}
+
+/* Individual social icon links */
+.calc-footer .socials a {
+  display: inline-block;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* Hover effect: grow slightly and brighten */
+.calc-footer .socials a:hover {
+  transform: scale(1.2);
   filter: brightness(1.3);
 }
 
-.key:focus {
-  outline: none;
-  filter: brightness(1.15);
+/* Social icon images */
+.calc-footer .social-icon {
+  width: 30px; /* adjust size */
+  height: 30px;
+  object-fit: contain;
+}
+
+/* Optional: space between the "Connect with me" text and the icons */
+.calc-footer p {
+  margin-bottom: 10px;
+}
+
+/* Site footer social styling (optional if you add logos there too) */
+.site-footer .socials {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.site-footer .socials a {
+  display: inline-block;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.site-footer .socials a:hover {
+  transform: scale(1.2);
+  filter: brightness(1.3);
+}
+
+.site-footer .social-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }

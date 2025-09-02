@@ -1,203 +1,223 @@
-// =============================
-// iOS Calculator - Extended Logic with Operator Highlight
-// =============================
+// ioscalc.js
+document.addEventListener("DOMContentLoaded", () => {
+  const output = document.getElementById("calc-output");
+  const history = document.getElementById("calc-history");
+  const keys = document.getElementById("keys");
 
-// Select DOM elements
-const output = document.getElementById("calc-output");
-const history = document.getElementById("calc-history");
-const keys = document.getElementById("keys");
+  let expression = ""; 
+  let lastResult = null;
 
-// Calculator state
-let currentValue = "0";
-let previousValue = null;
-let operator = null;
-let resetNext = false;
-
-// Helper: format a numeric string for the screen (switch to scientific when needed)
-function formatNumberForDisplay(value) {
-  if (value === "Error") return "Error";
-  const num = Number(value);
-  if (!isFinite(num)) return "Error";
-
-  const abs = Math.abs(num);
-
-  // Use exponential for very large or very small numbers
-  if ((abs !== 0 && (abs >= 1e10 || abs < 1e-9))) {
-    // Use a compact exponential (adjust precision if you like)
-    return num.toExponential(6);
-  }
-
-  // Normal display: try to fit within 10 characters
-  let s = num.toString();
-
-  if (s.length <= 10) return s;
-
-  // If there's a decimal, trim fractional digits to fit
-  if (s.includes(".")) {
-    const signLen = num < 0 ? 1 : 0;
-    const intLen = Math.trunc(abs).toString().length;
-    const allowedDecimals = Math.max(0, 10 - intLen - signLen - 1); // -1 for the dot
-    const fixed = num.toFixed(allowedDecimals);
-    return fixed.replace(/\.?0+$/, ""); // remove trailing zeros and optional dot
-  }
-
-  // Fallback to exponential if integer is too long
-  return num.toExponential(6);
-}
-
-// Replacement updateDisplay() — uses your existing `output`, `currentValue`, `resetNext`
-function updateDisplay() {
-  // Handle explicit Error state
-  if (currentValue === "Error") {
-    output.textContent = "Error";
-    return;
-  }
-
-  // If user is actively typing a number (not a computed result),
-  // preserve exact input (including trailing dot) but cap length to 10 chars.
-  if (!resetNext) {
-    output.textContent = currentValue.length <= 10 ? currentValue : currentValue.slice(0, 10);
-    return;
-  }
-
-  // For computed results, format numerically (handles long numbers -> scientific)
-  output.textContent = formatNumberForDisplay(currentValue);
-}
-
-
-// Update history line
-function updateHistory() {
-  if (previousValue !== null && operator) {
-    const symbolMap = {
-      add: "+",
-      subtract: "−",
-      multiply: "×",
-      divide: "÷",
-    };
-    history.textContent = `${previousValue} ${symbolMap[operator]}`;
-  } else {
-    history.textContent = "";
-  }
-}
-
-// Clear all (AC)
-function clearAll() {
-  currentValue = "0";
-  previousValue = null;
-  operator = null;
-  resetNext = false;
-  clearOperatorHighlight();
-  updateDisplay();
-  updateHistory();
-}
-
-// Perform calculation
-function calculate(a, b, op) {
-  const x = parseFloat(a);
-  const y = parseFloat(b);
-
-  switch (op) {
-    case "add":
-      return (x + y).toString();
-    case "subtract":
-      return (x - y).toString();
-    case "multiply":
-      return (x * y).toString();
-    case "divide":
-      return y === 0 ? "Error" : (x / y).toString();
-    default:
-      return b;
-  }
-}
-
-// Highlight the active operator button
-function highlightOperator(opKey) {
-  clearOperatorHighlight();
-  const button = keys.querySelector(`[data-operator="${opKey}"]`);
-  if (button) button.classList.add("active-operator");
-}
-
-// Clear operator highlights
-function clearOperatorHighlight() {
-  keys.querySelectorAll(".key--op").forEach(btn => btn.classList.remove("active-operator"));
-}
-
-// Handle button clicks
-keys.addEventListener("click", (event) => {
-  if (!event.target.matches("button")) return; // Only buttons
-
-  const key = event.target;
-  const action = key.dataset.action;
-  const keyValue = key.dataset.key;
-
-  if (action === "digit") {
-    if (currentValue === "0" || resetNext) {
-      currentValue = keyValue;
-      resetNext = false;
-    } else {
-      currentValue += keyValue;
+  // Update the display safely
+  function updateDisplay() {
+    if (!expression) {
+      output.textContent = "0";
+      output.style.fontSize = "2.5rem";
+      return;
     }
-    updateDisplay();
-    clearOperatorHighlight(); // remove highlight after digit input
-  }
 
-  if (action === "decimal") {
-    if (resetNext) {
-      currentValue = "0.";
-      resetNext = false;
-    } else if (!currentValue.includes(".")) {
-      currentValue += ".";
-    }
-    updateDisplay();
-  }
-
-  if (action === "operator") {
-    if (previousValue !== null && operator && !resetNext) {
-      currentValue = calculate(previousValue, currentValue, operator);
-      updateDisplay();
-    }
-    previousValue = currentValue;
-    operator = key.dataset.operator;
-    resetNext = true;
-    updateHistory();
-    highlightOperator(operator);
-  }
-
-  if (action === "equals") {
-    if (previousValue !== null && operator) {
-      currentValue = calculate(previousValue, currentValue, operator);
-      updateDisplay();
-      previousValue = null;
-      operator = null;
-      resetNext = true;
-      updateHistory();
-      clearOperatorHighlight();
-    }
-  }
-
-  if (action === "clear") {
-    clearAll();
-  }
-
-  if (action === "invert") {
-    if (currentValue !== "0" && currentValue !== "Error") {
-      if (currentValue.startsWith("-")) {
-        currentValue = currentValue.slice(1);
-      } else {
-        currentValue = "-" + currentValue;
+    if (!isNaN(Number(expression))) {
+      if (expression.length > 14) {
+        output.textContent = Number(expression).toExponential(6);
+        output.style.fontSize = "2rem";
+        return;
       }
+    }
+
+    if (expression.length <= 10) {
+      output.style.fontSize = "2.5rem";
+    } else if (expression.length <= 14) {
+      output.style.fontSize = "2rem";
+    } else {
+      output.style.fontSize = "1.5rem";
+    }
+
+    output.textContent = expression;
+  }
+
+  function clearAll() {
+    expression = "";
+    history.textContent = "";
+    updateDisplay();
+  }
+
+  function evaluateExpression() {
+    try {
+      const safeExpr = expression
+        .replace(/÷/g, "/")
+        .replace(/×/g, "*")
+        .replace(/−/g, "-");
+
+      if (!/^[0-9+\-*/().%\s]+$/.test(safeExpr)) throw new Error("Invalid");
+
+      const result = Function(`"use strict"; return (${safeExpr})`)();
+
+      if (result === undefined || isNaN(result)) throw new Error("Invalid");
+
+      history.textContent = expression + " =";
+      expression = result.toString();
+
+      if (expression.length > 14) {
+        expression = Number(result).toExponential(6).toString();
+      }
+
       updateDisplay();
+    } catch (err) {
+      output.textContent = "Syntax Error";
     }
   }
 
-  if (action === "percent") {
-    if (currentValue !== "Error") {
-      currentValue = (parseFloat(currentValue) / 100).toString();
-      updateDisplay();
+  // Button click handler
+  keys.addEventListener("click", (e) => {
+    const key = e.target;
+    const action = key.dataset.action;
+
+    if (!action) return;
+
+    switch (action) {
+      case "digit":
+        expression += key.dataset.key;
+        updateDisplay();
+        break;
+
+      case "decimal":
+        expression += ".";
+        updateDisplay();
+        break;
+
+      case "operator":
+        expression += key.textContent;
+        updateDisplay();
+        break;
+
+      case "clear":
+        clearAll();
+        break;
+
+      case "invert":
+        if (expression) {
+          try {
+            const safeExpr = expression
+              .replace(/÷/g, "/")
+              .replace(/×/g, "*")
+              .replace(/−/g, "-");
+            const currentVal = Function(`"use strict"; return (${safeExpr})`)();
+            expression = (-currentVal).toString();
+            updateDisplay();
+          } catch {
+            output.textContent = "Syntax Error";
+          }
+        }
+        break;
+
+      case "percent":
+        if (expression) {
+          try {
+            const safeExpr = expression
+              .replace(/÷/g, "/")
+              .replace(/×/g, "*")
+              .replace(/−/g, "-");
+            const currentVal = Function(`"use strict"; return (${safeExpr})`)();
+            expression = (currentVal / 100).toString();
+            updateDisplay();
+          } catch {
+            output.textContent = "Syntax Error";
+          }
+        }
+        break;
+
+      case "equals":
+        evaluateExpression();
+        break;
+
+      case "delete":
+        expression = expression.slice(0, -1);
+        updateDisplay();
+        break;
     }
-  }
+  });
+
+  // ======= KEYBOARD SUPPORT =======
+  document.addEventListener("keydown", (e) => {
+    const key = e.key;
+
+    // Numbers
+    if (/\d/.test(key)) {
+      expression += key;
+      updateDisplay();
+      return;
+    }
+
+    // Operators
+    const symbolMap = { "+": "+", "-": "−", "*": "×", "/": "÷" };
+    if (symbolMap[key]) {
+      expression += symbolMap[key];
+      updateDisplay();
+      return;
+    }
+
+    // Enter or "=" evaluates
+    if (key === "Enter" || key === "=") {
+      evaluateExpression();
+      return;
+    }
+
+    // Backspace deletes last character
+    if (key === "Backspace") {
+      expression = expression.slice(0, -1);
+      updateDisplay();
+      return;
+    }
+
+    // Escape clears everything
+    if (key === "Escape") {
+      clearAll();
+      return;
+    }
+
+    // Percent
+    if (key === "%") {
+      if (expression) {
+        try {
+          const safeExpr = expression
+            .replace(/÷/g, "/")
+            .replace(/×/g, "*")
+            .replace(/−/g, "-");
+          const currentVal = Function(`"use strict"; return (${safeExpr})`)();
+          expression = (currentVal / 100).toString();
+          updateDisplay();
+        } catch {
+          output.textContent = "Syntax Error";
+        }
+      }
+      return;
+    }
+
+    // Decimal point
+    if (key === ".") {
+      expression += ".";
+      updateDisplay();
+      return;
+    }
+
+    // Invert (±) using 'i' key
+    if (key.toLowerCase() === "i") {
+      if (expression) {
+        try {
+          const safeExpr = expression
+            .replace(/÷/g, "/")
+            .replace(/×/g, "*")
+            .replace(/−/g, "-");
+          const currentVal = Function(`"use strict"; return (${safeExpr})`)();
+          expression = (-currentVal).toString();
+          updateDisplay();
+        } catch {
+          output.textContent = "Syntax Error";
+        }
+      }
+      return;
+    }
+  });
+  // ===============================
+
+  clearAll();
 });
-
-// Initialize
-updateDisplay();
-updateHistory();

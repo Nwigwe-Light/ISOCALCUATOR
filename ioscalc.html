@@ -12,59 +12,113 @@
     <link rel="stylesheet" href="isocalc.css" />
   </head>
   <body>
+
+    <header class="site-header">
+    <h1>JUBILEE'S MATH HUB</h1>
+  </header>
+
     <!-- Main calculator container -->
     <main class="calculator" role="application" aria-label="Calculator">
 
-      <!-- Display section: shows calculation history and current output -->
-      <section class="display" aria-live="polite" aria-atomic="true">
-        <!-- Optional line for previous operation / history -->
-        <div id="calc-history" class="history" aria-hidden="true"></div>
-        <!-- Main output display where results and input appear -->
-        <output id="calc-output" class="output" for="keys">0</output>
-      </section>
+  <!-- Brand Header -->
+  <div class="brand" aria-hidden="true">NUMERO UNO</div>
+
+  <!-- Display section -->
+  <section class="display" aria-live="polite" aria-atomic="true">
+    <div id="calc-history" class="history" aria-hidden="true"></div>
+    <output id="calc-output" class="output" for="keys">0</output>
+  </section>
+
 
       <!-- Keypad section: contains all calculator buttons -->
-      <section id="keys" class="keys" aria-label="Calculator keypad">
-        <!-- Row 1: functions + divide operator -->
-        <div class="row" role="group" aria-label="Functions">
-          <button type="button" id="key-ac" class="key key--func" data-action="clear" aria-label="All Clear">AC</button>
-          <button type="button" class="key key--func" data-action="invert" aria-label="Plus or Minus">±</button>
-          <button type="button" class="key key--func" data-action="percent" aria-label="Percent">%</button>
-          <button type="button" class="key key--op" data-action="operator" data-operator="divide" aria-label="Divide">÷</button>
-        </div>
+<section id="keys" class="keys" aria-label="Calculator keypad">
 
-        <!-- Row 2: digits 7, 8, 9 and multiply operator -->
-        <div class="row" role="group" aria-label="Seven to Nine and Multiply">
-          <button type="button" class="key" data-action="digit" data-key="7" aria-label="Seven">7</button>
-          <button type="button" class="key" data-action="digit" data-key="8" aria-label="Eight">8</button>
-          <button type="button" class="key" data-action="digit" data-key="9" aria-label="Nine">9</button>
-          <button type="button" class="key key--op" data-action="operator" data-operator="multiply" aria-label="Multiply">×</button>
-        </div>
+  <!-- Row 1: functions + divide operator -->
+  <div class="row" role="group" aria-label="Functions">
+    <button type="button" id="key-ac" class="key key--func" data-action="clear" aria-label="All Clear">AC</button>
+    <button type="button" class="key key--func" data-action="percent" aria-label="Percent">%</button>
+    <button type="button" class="key key--func" data-action="delete" aria-label="Delete">DEL</button>
+    <button type="button" class="key key--op" data-action="operator" data-operator="divide" aria-label="Divide">÷</button>
+  </div>
 
-        <!-- Row 3: digits 4, 5, 6 and minus operator -->
-        <div class="row" role="group" aria-label="Four to Six and Minus">
-          <button type="button" class="key" data-action="digit" data-key="4" aria-label="Four">4</button>
-          <button type="button" class="key" data-action="digit" data-key="5" aria-label="Five">5</button>
-          <button type="button" class="key" data-action="digit" data-key="6" aria-label="Six">6</button>
-          <button type="button" class="key key--op" data-action="operator" data-operator="subtract" aria-label="Minus">−</button>
-        </div>
+  <!-- Row 2: digits 7, 8, 9 and multiply operator -->
+  <div class="row" role="group" aria-label="Seven to Nine and Multiply">
+    <button type="button" class="key" data-action="digit" data-key="7" aria-label="Seven">7</button>
+    <button type="button" class="key" data-action="digit" data-key="8" aria-label="Eight">8</button>
+    <button type="button" class="key" data-action="digit" data-key="9" aria-label="Nine">9</button>
+    <button type="button" class="key key--op" data-action="operator" data-operator="multiply" aria-label="Multiply">×</button>
+  </div>
 
-        <!-- Row 4: digits 1, 2, 3 and plus operator -->
-        <div class="row" role="group" aria-label="One to Three and Plus">
-          <button type="button" class="key" data-action="digit" data-key="1" aria-label="One">1</button>
-          <button type="button" class="key" data-action="digit" data-key="2" aria-label="Two">2</button>
-          <button type="button" class="key" data-action="digit" data-key="3" aria-label="Three">3</button>
-          <button type="button" class="key key--op" data-action="operator" data-operator="add" aria-label="Plus">+</button>
-        </div>
+  <!-- Row 3: digits 4, 5, 6 and minus operator -->
+  <div class="row" role="group" aria-label="Four to Six and Minus">
+    <button type="button" class="key" data-action="digit" data-key="4" aria-label="Four">4</button>
+    <button type="button" class="key" data-action="digit" data-key="5" aria-label="Five">5</button>
+    <button type="button" class="key" data-action="digit" data-key="6" aria-label="Six">6</button>
+    <button type="button" class="key key--op" data-action="operator" data-operator="subtract" aria-label="Minus">−</button>
+  </div>
 
-        <!-- Row 5: digit 0 (wide button), decimal point, equals operator -->
-        <div class="row" role="group" aria-label="Zero, Decimal, Equals">
-          <button type="button" class="key key--zero" data-action="digit" data-key="0" aria-label="Zero">0</button>
-          <button type="button" class="key" data-action="decimal" data-key="." aria-label="Decimal Point">.</button>
-          <button type="button" class="key key--op" data-action="equals" aria-label="Equals">=</button>
-        </div>
-      </section>
+  <!-- Row 4: digits 1, 2, 3 and plus operator -->
+  <div class="row" role="group" aria-label="One to Three and Plus">
+    <button type="button" class="key" data-action="digit" data-key="1" aria-label="One">1</button>
+    <button type="button" class="key" data-action="digit" data-key="2" aria-label="Two">2</button>
+    <button type="button" class="key" data-action="digit" data-key="3" aria-label="Three">3</button>
+    <button type="button" class="key key--op" data-action="operator" data-operator="add" aria-label="Plus">+</button>
+  </div>
+
+  <!-- Row 5: digit 0, decimal point, equals, plus/minus -->
+  <div class="row" role="group" aria-label="Zero, Decimal, Equals, PlusMinus">
+    <button type="button" class="key" data-action="digit" data-key="0" aria-label="Zero">0</button>
+    <button type="button" class="key" data-action="decimal" data-key="." aria-label="Decimal Point">.</button>
+    <button type="button" class="key key--func" data-action="invert" aria-label="Plus or Minus">±</button>
+    <button type="button" class="key key--op" data-action="equals" aria-label="Equals">=</button>
+  </div>
+</section>
+
+<div>   
+    <!-- FOOTER -->  
+    <footer class="calc-footer">
+      <p><a href="https://linktr.ee/thelatterglory">Connect with me</a></p>
+    </footer>
+  </div>
+
     </main>
+
+    </div>
+
+
+<footer class="site-footer">
+    <div class="socials">
+      <p>Copyright 2025. All rights reserved.</p>
+    <a href="https://www.facebook.com/share/16qm5FHcr3/" target="_blank" aria-label="Facebook">
+      <img src="iosimages\facebook.webp" class="social-icon">
+    </a>
+    <a href="https://www.instagram.com/numero_un001?igsh=OGN4NnZ3dTF1bDR3" target="_blank" aria-label="Instagram">
+      <img src="iosimages/IG.png" alt="Instagram" class="social-icon">
+    </a>
+
+    <a href="https://www.linkedin.com/in/jubilee-nwigwe" target="_blank" aria-label="linkedIn">
+      <img src="iosimages/linkedin.png" alt="LinkedIn" class="social-icon">  
+    </a>
+    <a href="https://github.com/Nwigwe-Light" target="_blank" aria-label="Github">
+      <img src="iosimages/github.png" alt="Github" class="social-icon">
+    </a> 
+    <a href="https://www.tiktok.com/@numeroun_001?_t=ZS-8yriVXUOmV5&_r=1" target="_blank" aria-label="TikTok">
+      <img src="iosimages/tiktok.png" alt="TikTok" class="social-icon">
+    </a>
+    <a href="https://t.me/numerouno_001" target="_blank" aria-label="Telegram">
+      <img src="iosimages/telegram.png" alt="Telegram" class="social-icon">
+    </a> 
+    <a href="https://x.com/Numero_un001?t=2ULYq6B_dw_Ju1r6u-6f5Q&s=09" target="_blank" aria-label="X">
+      <img src="iosimages/x.webp" alt="X" class="social-icon">
+    </a>
+    <a href="https://wa.me/2349163821393" target="_blank" aria-label="WhatsApp">
+      <img src="iosimages/whatsapp.png" alt="WhatsApp" class="social-icon">
+    </a>  
+    <a href="https://www.threads.net/@numero_un001" target="_blank" aria-label="Threads">
+      <img src="iosimages/threads.png" alt="Threads" class="social-icon">
+    </a>
+  </div>
+</footer>
 
     <!-- Fallback message for users with JavaScript disabled -->
     <noscript>

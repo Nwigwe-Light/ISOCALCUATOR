@@ -209,7 +209,7 @@ body {
 .site-header, .site-footer {
   width: 100%;
   padding: 15px 0;
-  background: radial-gradient(ellipse, #FFD700, black); /* gradient */
+  background: #c9a227;
   color: black;   /* black text */
   font-weight: bold ;
   text-align: center;

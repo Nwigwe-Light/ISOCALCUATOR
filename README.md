@@ -48,7 +48,7 @@ No build tools or dependencies required.
 
 ## 🖼️ Screenshot
 
-![Calculator Screenshot](iosimages\webpagescreenshot.png)
+![Calculator Screenshot](iosimages/webpagescreenshot.png)
 
 ---
 
